@@ -29,7 +29,7 @@ h1 {
 }
 #game-board {
   border-collapse: collapse;
-  margin: 50px auto;
+  margin: 30px auto;
 }
 
 #game-board td {
@@ -47,6 +47,7 @@ h1 {
   align-items: center;
   gap: 20px;
   justify-content: center;
+  margin-bottom: 20px;
 }
 .track-player > div > span {
   color: #ffffff;
@@ -63,8 +64,8 @@ div[id = "O"]{
   padding: 10px;
   color: #FFDD95;
 }
-.turn{
- background-color: ;
+.player-turn {
+  font-size: 2rem;
 }
 #game-stats {
   text-align: center;

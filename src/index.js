@@ -8,6 +8,7 @@ const playBtn = document.getElementById('play-btn');
 const resetBtn = document.getElementById('reset-btn');
 const clicked = document.getElementById("clicked");
 const win = document.getElementById("win");
+const playerTurn = document.querySelector(".player-turn");
 
 // Define variables to track game state
 let currentPlayer = 'X';
@@ -18,7 +19,7 @@ let oWins = 0;
 
 
 
-
+// arrays of different winning options
 const winningOptions = [
   [0, 1, 2],
   [3, 4, 5],
@@ -32,44 +33,57 @@ const winningOptions = [
 
 updateStats();
 
-// add event listener to each cell
-cells.forEach(cell => {
-  cell.addEventListener("click", () => {
-    handleClick(event);
-  });
-})
+// to add event listeners to each cell and avoid clicking once cell multiple times
+cells.forEach((cell) => {
+  cell.addEventListener("click", handleClick, { once: true });
+});
+
 
 function handleClick(e) {
   clicked.play();
   const id = e.target.id;
+  // to check if the cell clicked on is empty
   if (!gameBoard[id]) {
     gameBoard[id] = currentPlayer;
     e.target.innerHTML = currentPlayer;
     if (checkWin()) {
       win.play();
       popUpText.innerHTML = `Player ${currentPlayer} Has Won`;
+      // to update score for whichever player that won
       currentPlayer == "X"? xWins = xWins + 1 : oWins = oWins + 1;
+      // update number of games played
       gamePlayed = gamePlayed + 1;
       updateStats();
+
+      // to give the winning cells a different background color
       let winingBlocks =  checkWin();
       winingBlocks.forEach(block => {
         cells[block].style.backgroundColor = "#0F2167";
       })
-     setTimeout(() => {
-      popUp.classList.add("active");
-     }, 1000);
-    } else if (gameBoard.every(space => space !== null)) {
-        gamePlayed = gamePlayed + 1;
-        updateStats();
-        setTimeout(() => {
-          popUp.classList.add("active");
-          popUpText.innerHTML = `It's a Draw`;
-          
-        }, 1000);
+     renderPopup();
+
+    //  disable click event on all cells
+    cells.forEach((cell) => {
+      cell.removeEventListener("click", handleClick);
+    });
+  } else if (gameBoard.every(space => space !== null)) {
+      gamePlayed = gamePlayed + 1;
+      updateStats();
+      popUpText.innerHTML = `It's a Draw`;
+      renderPopup();
     }
       
   }
   currentPlayer = currentPlayer === "X" ? "O" : "X";
+  playerTurn.innerHTML  = `${currentPlayer}'s Turn`;
+  playerTurn.style.color = currentPlayer ==="X" ? "#86A7FC" : "#FFDD95";
+}
+
+// to bring out the popup modal at the end of a game 
+function renderPopup() {
+  setTimeout(() => {
+    popUp.classList.add("active");
+  }, 1000);
 }
 
 // function to check for win
@@ -89,24 +103,32 @@ function updateStats() {
   playerO.innerHTML = oWins;
 }
 
-playBtn.addEventListener("click", () => {
-  gameBoard.fill(null);
-  popUp.classList.remove("active");
-  cells.forEach(cell => {
-     cell.innerHTML = "";
-     cell.style.backgroundColor = "transparent";
-  })
-})
+playBtn.addEventListener("click", playAgain);
 
+// resets all game stats / scores
 resetBtn.addEventListener("click", () => {
-  gameBoard.fill(null);
-  popUp.classList.remove("active");
+  playAgain();
   gamePlayed = 0;
   xWins = 0;
   oWins = 0;
   updateStats();
-  cells.forEach(cell => {
-     cell.innerHTML = "";
-     cell.style.backgroundColor = "transparent";
-  })
 })
+
+function playAgain() {
+  // add back the event listener
+  cells.forEach((cell) => {
+    cell.addEventListener("click", handleClick, { once: true });
+  });
+  gameBoard.fill(null);
+  popUp.classList.remove("active");
+
+  // remove the background color on previous winning cells
+  cells.forEach(cell => {
+    cell.innerHTML = "";
+    cell.style.backgroundColor = "transparent";
+ });
+}
+
+// indicates current player's turn
+playerTurn.innerHTML  = `${currentPlayer}'s Turn`;
+playerTurn.style.color = currentPlayer ==="X" ? "#86A7FC" : "#FFDD95";
