@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TIC-TAC-TOE</title>
+
+  <!-- styles sheet -->
+  <link rel="stylesheet" href="./src/styles.css">
+</head>
+<body>
+  <h1>Tic-Tac-Toe </h1>
+  <div class="track-player">
+    <div class="turn" id="X">Player X: <span class="x-win"></span></div>
+    <small>vs</small>
+    <div id="O">Player O: <span class="o-win"></span></div>
+  </div>
+  <table id="game-board">
+      <tr>
+        <td id="0"></td>
+        <td id="1"></td>
+        <td id="2"></td>
+      </tr>
+      <tr>
+        <td id="3"></td>
+        <td id="4"></td>
+        <td id="5"></td>
+      </tr>
+      <tr>
+        <td id="6"></td>
+        <td id="7"></td>
+        <td id="8"></td>
+      </tr>
+  </table>
+  <div id="game-stats">
+    <p>Games Played: <span id="games-played"></span></p>
+</div>
+<button id="reset-btn">
+  Reset Game
+</button>
+  <div class="result-box">
+    <p class="result-text"></p>
+    <button id="play-btn">
+      Play Again
+    </button>
+  </div>
+  <audio id="clicked" src="./src/clicked.wav" preload="auto"></audio>
+  <audio id="win" src="./src/win.mp3" preload="auto"></audio>
+  <script src="./src/index.js"></script>
+</body>
+</html>
